@@ -5,7 +5,7 @@ requires = ["enscons"]
 [tool.enscons]
 name = "hello-pyrust"
 description = "minimal Python + Rust example"
-version = "0.0.1"
+version = "0.1.0"
 author = "Simon Sapin"
 author_email = "simon@example.org"
 keywords = ["python", "rust", "cffi"]

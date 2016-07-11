@@ -31,7 +31,7 @@ rust_lib = 'rust/target/release/' + rust_libname
 # Build rust
 env.Command(
         target=rust_lib,
-        source=Glob("rust/src/{*.h,*.rs}"),
+        source=["rust/Cargo.toml"] + Glob("rust/src/{*.h,*.rs}"),
         action="cargo build --release", 
         chdir="rust"
         )
@@ -50,7 +50,7 @@ local_rust_h = env.Command(
 env.Whl('platlib', py_source + local_rust + local_rust_h, root='')
 
 # Add automatic source files, plus any other needed files.
-sdist_source=FindSourceFiles() + ['PKG-INFO', 'setup.py']
+sdist_source=FindSourceFiles() + ['PKG-INFO', 'setup.py', 'LICENSE', 'README.md']
 
 sdist = env.Package(
         NAME=env['PACKAGE_NAME'],
