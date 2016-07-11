@@ -47,7 +47,7 @@ local_rust_h = env.Command(
         source='rust/src/hello_pyrust.h',
         action=Copy('$TARGET', '$SOURCE'))
 
-env.Whl('platlib', py_source + local_rust, root='')
+env.Whl('platlib', py_source + local_rust + local_rust_h, root='')
 
 # Add automatic source files, plus any other needed files.
 sdist_source=FindSourceFiles() + ['PKG-INFO', 'setup.py']
