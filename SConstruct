@@ -31,7 +31,7 @@ rust_lib = 'rust/target/release/' + rust_libname
 # Build rust
 env.Command(
         target=rust_lib,
-        source=["rust/Cargo.toml"] + Glob("rust/src/{*.h,*.rs}"),
+        source=["rust/Cargo.toml", "rust/src/hello_pyrust.h", "rust/src/lib.rs"],
         action="cargo build --release", 
         chdir="rust"
         )
