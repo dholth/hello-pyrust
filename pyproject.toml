@@ -1,0 +1,16 @@
+
+[build-system]
+requires = ["enscons"]
+
+[tool.enscons]
+name = "hello-pyrust"
+description = "minimal Python + Rust example"
+version = "0.0.1"
+author = "Simon Sapin"
+author_email = "simon@example.org"
+keywords = ["python", "rust", "cffi"]
+url = "https://github.com/SimonSapin/hello-pyrust"
+license = "CC0"
+install_requires = ["cffi>=1.0.0"]
+py_modules = ["hello_pyrust"]
+src_root = ""

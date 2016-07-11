@@ -6,8 +6,7 @@ from cffi import FFI
 ffi = FFI()
 ffi.cdef(open(os.path.join(
     # FIXME: path is hard-coded
-    os.path.dirname(__file__), 'rust', 'src',
-    'hello_pyrust.h',
+    os.path.dirname(__file__), 'hello_pyrust.h',
 )).read());
 
 if sys.platform == 'win32':
@@ -18,11 +17,11 @@ elif sys.platform == 'darwin':
 else:
     DYNAMIC_LIB_FORMAT = 'lib%s.so'
 
-rust_lib = ffi.dlopen(os.path.join(
+rust_lib = ffi.dlopen(os.path.abspath(os.path.join(
     # FIXME: path is hard-coded
-    os.path.dirname(__file__), 'rust', 'target', 'debug',
+    os.path.dirname(__file__), 
     DYNAMIC_LIB_FORMAT % 'hello_pyrust'
-))
+)))
 
 
 def main():
