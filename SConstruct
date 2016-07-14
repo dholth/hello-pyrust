@@ -9,17 +9,13 @@ metadata = dict(toml.load(open('pyproject.toml')))['tool']['enscons']
 
 # most specific binary, non-manylinux1 tag should be at the top of this list
 import wheel.pep425tags
-for tag in wheel.pep425tags.get_supported():
-    full_tag = '-'.join(tag)
-    if not 'manylinux' in tag:
-        break
+full_tag = '-'.join(next(tag for tag in wheel.pep425tags.get_supported() if not 'manylinux' in tag))
 
 # full_tag = py2.py3-none-any # pure Python packages compatible with 2+3
 
 env = Environment(tools=['default', 'packaging', enscons.generate],
                   PACKAGE_METADATA=metadata,
-                  WHEEL_TAG=full_tag,
-                  ROOT_IS_PURELIB=False)
+                  WHEEL_TAG=full_tag)
 
 # Only *.py is included automatically by setup2toml.
 # Add extra 'purelib' files or package_data here.
@@ -47,15 +43,10 @@ local_rust_h = env.Command(
         source='rust/src/hello_pyrust.h',
         action=Copy('$TARGET', '$SOURCE'))
 
-env.Whl('platlib', py_source + local_rust + local_rust_h, root='')
+wheelfiles = env.Whl('platlib', py_source + local_rust + local_rust_h, root='')
+env.WhlFile(source=wheelfiles)
 
 # Add automatic source files, plus any other needed files.
 sdist_source=FindSourceFiles() + ['PKG-INFO', 'setup.py', 'LICENSE', 'README.md']
 
-sdist = env.Package(
-        NAME=env['PACKAGE_NAME'],
-        VERSION=env['PACKAGE_METADATA']['version'],
-        PACKAGETYPE='src_targz',
-        source=sdist_source,
-        target=['/'.join(['dist', env['PACKAGE_NAME'] + '-' + env['PACKAGE_VERSION'] + '.tar.gz'])],
-        )
+sdist = env.SDist(source=sdist_source)
